@@ -115,7 +115,7 @@ export const HomeComponent: React.FC<HomeComponentProps> = ({ onStart }) => {
           transition={{ delay: 0.2 }}
           className="text-base lg:text-lg text-slate-500 max-w-2xl mx-auto leading-relaxed font-medium px-6"
         >
-          Domina los conceptos fundamentales de la epidemiología a través de métodos activos y tutoría inteligente personalizada.
+          Domina los conceptos fundamentales de la epidemiología de enfermedades infecciosas a través de métodos activos y tutoría inteligente personalizada.
         </motion.p>
       </div>
 
