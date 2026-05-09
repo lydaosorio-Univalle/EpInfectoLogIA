@@ -45,7 +45,7 @@ export default function App() {
             <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center text-white shadow-lg shadow-indigo-100 transition-transform group-hover:rotate-6">
               <Microscope size={18} />
             </div>
-            <h1 className="text-xl font-bold tracking-tight text-slate-800">EpInfectoLogIA</h1>
+            <h1 className="text-xl font-bold tracking-tight text-slate-800">EpIdemioLogIA</h1>
           </div>
           <p className="text-[10px] uppercase tracking-widest text-slate-400 font-semibold mt-1">Epidemiología</p>
         </div>
@@ -84,7 +84,7 @@ export default function App() {
         {/* Top Header */}
         <header className="h-16 lg:h-20 bg-white border-b border-slate-200 flex items-center justify-between px-4 lg:px-8 shrink-0">
           <div className="flex-1 lg:hidden">
-            <h1 className="text-lg font-bold tracking-tight text-slate-800">EpInfectoLogIA</h1>
+            <h1 className="text-lg font-bold tracking-tight text-slate-800">EpIdemioLogIA</h1>
           </div>
           <div className="hidden lg:block flex-1" />
           <div className="flex items-center gap-2 lg:gap-4">

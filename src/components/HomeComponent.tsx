@@ -107,7 +107,7 @@ export const HomeComponent: React.FC<HomeComponentProps> = ({ onStart }) => {
           animate={{ opacity: 1, y: 0 }}
           className="text-4xl md:text-7xl font-sans lg:font-serif font-bold text-slate-800 mb-4 lg:mb-6 tracking-tight px-4"
         >
-          EpInfectoLog<span className="text-primary italic">IA</span>
+          EpIdemioLog<span className="text-primary italic">IA</span>
         </motion.h1>
         <motion.p 
           initial={{ opacity: 0 }}
@@ -196,7 +196,7 @@ export const HomeComponent: React.FC<HomeComponentProps> = ({ onStart }) => {
               Esta herramienta está diseñada para estudiantes y profesionales interesados en la epidemiología de enfermedades infecciosas.
           </p>
           <p className="text-[9px] text-slate-400 font-bold uppercase tracking-wide opacity-80">
-              EpInfectoLogIA v1.0 desarrollada por Lyda Osorio Universidad del Valle y TGHNLAC
+              EpIdemioLogIA v1.0 desarrollada por Lyda Osorio Universidad del Valle y TGHNLAC
           </p>
         </div>
       </motion.div>

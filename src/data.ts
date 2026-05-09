@@ -582,7 +582,7 @@ export const terms: Term[] = [
   {
     id: '95',
     term: 'Vector biológico',
-    definition: 'Agente que debe multiplicarse o desarrollarse dentro del vector antes de que este pueda transmitir la forma infectante.',
+    definition: 'Cuando dentro del vector, el agente debe desarrollarse antes de que este pueda transmitir a otro hospedero.',
     category: 'General'
   },
   {
@@ -672,7 +672,7 @@ export const questions: Question[] = [
       'No hay ninguna diferencia técnica.'
     ],
     correctAnswer: 2,
-    explanation: 'En el vector biológico el agente debe cumplir una fase de desarrollo o multiplicación antes de poder transmitir la forma infectante.'
+    explanation: 'En el vector biológico, el agente debe desarrollarse antes de que este pueda transmitir a otro hospedero.'
   },
   {
     id: 'q3',

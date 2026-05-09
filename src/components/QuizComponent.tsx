@@ -1,18 +1,51 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { CheckCircle2, XCircle, RotateCcw, ArrowRight, Award } from 'lucide-react';
-import { questions, Question } from '../data';
+import { terms, Question } from '../data';
 import { cn } from '../lib/utils';
 import confetti from 'canvas-confetti';
 
 export const QuizComponent: React.FC = () => {
+  const [shuffledQuestions, setShuffledQuestions] = useState<Question[]>([]);
   const [currentQuestionIndex, setCurrentIndex] = useState(0);
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
   const [isAnswered, setIsAnswered] = useState(false);
   const [score, setScore] = useState(0);
   const [showResult, setShowResult] = useState(false);
 
-  const currentQuestion = questions[currentQuestionIndex];
+  const generateQuiz = () => {
+    // 1. Pick 4 random terms to be questions
+    const selectedTerms = [...terms].sort(() => Math.random() - 0.5).slice(0, 4);
+    
+    const newQuestions: Question[] = selectedTerms.map((termItem) => {
+      // 2. Get 3 random distractor definitions from other terms
+      const distractors = terms
+        .filter(t => t.id !== termItem.id)
+        .sort(() => Math.random() - 0.5)
+        .slice(0, 3)
+        .map(t => t.definition);
+      
+      // 3. Combine with correct answer and shuffle options
+      const options = [termItem.definition, ...distractors].sort(() => Math.random() - 0.5);
+      const correctAnswerIndex = options.indexOf(termItem.definition);
+      
+      return {
+        id: `dynamic-${termItem.id}`,
+        text: `¿Cuál es la definición correcta de "${termItem.term}"?`,
+        options,
+        correctAnswer: correctAnswerIndex,
+        explanation: `El término "${termItem.term}" se define como: ${termItem.definition}`
+      };
+    });
+
+    setShuffledQuestions(newQuestions);
+  };
+
+  useEffect(() => {
+    generateQuiz();
+  }, []);
+
+  const currentQuestion = shuffledQuestions[currentQuestionIndex];
 
   const handleOptionSelect = (index: number) => {
     if (isAnswered) return;
@@ -20,7 +53,7 @@ export const QuizComponent: React.FC = () => {
   };
 
   const handleAnswer = () => {
-    if (selectedOption === null) return;
+    if (selectedOption === null || !currentQuestion) return;
     setIsAnswered(true);
     if (selectedOption === currentQuestion.correctAnswer) {
       setScore(score + 1);
@@ -28,13 +61,13 @@ export const QuizComponent: React.FC = () => {
   };
 
   const handleNext = () => {
-    if (currentQuestionIndex < questions.length - 1) {
+    if (currentQuestionIndex < shuffledQuestions.length - 1) {
       setCurrentIndex(currentQuestionIndex + 1);
       setSelectedOption(null);
       setIsAnswered(false);
     } else {
       setShowResult(true);
-      if (score + (selectedOption === currentQuestion.correctAnswer ? 1 : 0) >= questions.length / 2) {
+      if (score + (selectedOption === (currentQuestion?.correctAnswer ?? -1) ? 1 : 0) >= shuffledQuestions.length / 2) {
         confetti({
           particleCount: 100,
           spread: 70,
@@ -45,12 +78,15 @@ export const QuizComponent: React.FC = () => {
   };
 
   const resetQuiz = () => {
+    generateQuiz();
     setCurrentIndex(0);
     setSelectedOption(null);
     setIsAnswered(false);
     setScore(0);
     setShowResult(false);
   };
+
+  if (!shuffledQuestions.length) return null;
 
   if (showResult) {
     return (
@@ -65,10 +101,10 @@ export const QuizComponent: React.FC = () => {
           <Award size={48} className="hidden lg:block" />
         </div>
         <h2 className="text-2xl lg:text-3xl font-bold text-slate-800 mb-2">¡Cuestionario Terminado!</h2>
-        <p className="text-slate-500 mb-8 font-medium text-sm lg:text-base">Has completado el cuestionario de epidemiología.</p>
+        <p className="text-slate-500 mb-8 font-medium text-sm lg:text-base">Has completado el cuestionario de EpIdemioLogIA.</p>
         
         <div className="text-5xl lg:text-6xl font-black text-slate-800 mb-2">
-          {score} / {questions.length}
+          {score} / {shuffledQuestions.length}
         </div>
         <p className="text-[10px] lg:text-xs font-bold text-primary uppercase tracking-widest mb-10 lg:mb-12">Puntaje Final</p>
 
@@ -86,9 +122,9 @@ export const QuizComponent: React.FC = () => {
   return (
     <div className="max-w-2xl mx-auto p-4 w-full" id="quiz-section">
       <div className="mb-6 flex items-center justify-between">
-        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Pregunta {currentQuestionIndex + 1} de {questions.length}</span>
+        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Pregunta {currentQuestionIndex + 1} de {shuffledQuestions.length}</span>
         <div className="flex gap-1.5">
-          {questions.map((_, idx) => (
+          {shuffledQuestions.map((_, idx) => (
             <div 
               key={idx} 
               className={cn(
@@ -150,7 +186,7 @@ export const QuizComponent: React.FC = () => {
                 onClick={handleNext}
                 className="w-full flex items-center justify-center gap-3 py-4 bg-slate-900 text-white font-bold rounded-xl hover:bg-black transition-all active:scale-95 shadow-xl"
               >
-                {currentQuestionIndex === questions.length - 1 ? 'Ver Resultado' : 'Siguiente Pregunta'}
+                {currentQuestionIndex === shuffledQuestions.length - 1 ? 'Ver Resultado' : 'Siguiente Pregunta'}
                 <ArrowRight size={20} />
               </button>
             </motion.div>
